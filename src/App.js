@@ -20,13 +20,14 @@ const initialFriends = [
 ];
 export default function App() {
   const data=initialFriends
-  return <div >
+  return <div className="app">
      <div className="sidebar">
       <FriendList data={data} />
       <AddFriend/>
       <Button>Add Friend</Button>
-      
-      </div>
+   
+    </div>
+       <SplitBill/>
   </div>
 }
 
@@ -58,10 +59,27 @@ function Button({ children }) {
 function AddFriend() {
   return <form className="form-add-friend">
     <label>👫 Friend name</label>
-    <input></input>
+    <input type="text"></input>
      <label>🌄 Image URL</label>
-    <input></input>
+    <input type="text"></input>
     <Button>Add</Button>
   </form>
 }
 
+function SplitBill() {
+  return <form className="form-split-bill" >
+    <h2>Split a bill with X</h2>
+<label>💰 Bill value</label>
+    <input type="text"></input>
+    <label>🧍‍♀️ Your expense</label>
+    <input type="text"></input>
+    <label>👭 X's expense</label>
+    <input type="text" disabled></input>
+   <lable>🤑Who is paying the bill?</lable>
+    <select>
+      <option>You</option>
+      <option>X</option>
+    </select>
+
+  </form>
+}
