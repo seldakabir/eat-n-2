@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -19,12 +21,16 @@ const initialFriends = [
   },
 ];
 export default function App() {
-  const data=initialFriends
+  const data = initialFriends
+  const [shownAddList, setShownAddList] = useState(false)
+  function changeShowAddList() {
+    setShownAddList(shownAddList=>!shownAddList)
+  }
   return <div className="app">
      <div className="sidebar">
       <FriendList data={data} />
-      <AddFriend/>
-      <Button>Add Friend</Button>
+      {shownAddList && <AddFriend/>}
+      <Button onChangeShowAddList={changeShowAddList}>{shownAddList?'Close':'Add Friend' }</Button>
    
     </div>
        <SplitBill/>
@@ -51,8 +57,8 @@ function Friend({friend}) {
   </li>
 }
 
-function Button({ children }) {
-  return <button className="button">{children }</button>
+function Button({ children,onChangeShowAddList }) {
+  return <button className="button" onClick={onChangeShowAddList}>{children }</button>
   
 }
 
