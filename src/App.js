@@ -19,7 +19,28 @@ const initialFriends = [
   },
 ];
 export default function App() {
+  const data=initialFriends
   return <div>
-    hello
+    <FriendList data={data}/>
   </div>
+}
+
+function FriendList({data}) {
+  return <ul>
+    {data.map(friend =>
+      <Friend friend={friend } />)}
+  </ul>
+  
+}
+function Friend({friend}) {
+  return <li>
+    <img src={friend.image} alt={friend.image}></img>
+    <h2>{friend.name }</h2>
+    <label className={friend.balance > 0 ? 'green' :
+      friend.balance < 0 ? 'red' :
+    ''}>{friend.balance > 0 ? `${friend.name}owns you ${friend.balance}` :
+    friend.balance<0? `you own ${friend.name}${friend.balance}`:
+    `you and${friend.name}are even`}</label>
+    <button className="button">Select</button>
+  </li>
 }
