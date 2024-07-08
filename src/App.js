@@ -21,48 +21,62 @@ const initialFriends = [
   },
 ];
 export default function App() {
-  const data = initialFriends
+  
+  const [friends,setFriends]=useState(initialFriends)
   const [shownAddList, setShownAddList] = useState(false)
+   const [selectedFriend,setSelectedFriend]=useState(null)
+
+  function AddNewFriend(friend) {
+    setFriends(friends => [...friends, friend])
+    setShownAddList(false)
+    
+  }
+ 
   function changeShowAddList() {
     setShownAddList(shownAddList=>!shownAddList)
   }
+  function handleSelection(friend) {
+    setSelectedFriend(friend)
+    
+  }
   return <div className="app">
      <div className="sidebar">
-      <FriendList data={data} />
-      {shownAddList && <AddFriend/>}
-      <Button onChangeShowAddList={changeShowAddList}>{shownAddList?'Close':'Add Friend' }</Button>
+      <FriendList friends={friends} onSelecetFriend={handleSelection} />
+      {shownAddList && <AddFriend onAddFriend={AddNewFriend } />}
+      <Button onClick={changeShowAddList}>{shownAddList?'Close':'Add Friend' }</Button>
    
     </div>
-       <SplitBill/>
+       {selectedFriend && <SplitBill/>}
   </div>
 }
 
-function FriendList({data}) {
+function FriendList({friends,onSelecetFriend}) {
   return <ul>
-    {data.map(friend =>
-      <Friend friend={friend } />)}
+    {friends.map(friend =>
+      <Friend friend={friend } onSelecetFriend={onSelecetFriend} />)}
   </ul>
   
 }
-function Friend({friend}) {
+function Friend({ friend,onSelecetFriend }) {
+ 
   return <li>
     <img src={friend.image} alt={friend.image}></img>
     <h3>{friend.name }</h3>
     <p className={friend.balance > 0 ? 'green' :
       friend.balance < 0 ? 'red' :
     ''}>{friend.balance > 0 ? `${friend.name}owns you ${friend.balance}` :
-    friend.balance<0? `you own ${friend.name}${friend.balance}`:
-    `you and${friend.name}are even`}</p>
-    <Button >Select</Button>
+    friend.balance<0? `you own ${friend.name} ${friend.balance}`:
+    `you and ${friend.name} are even`}</p>
+    <Button onClick={()=>onSelecetFriend(friend)} >Select</Button>
   </li>
 }
 
-function Button({ children,onChangeShowAddList }) {
-  return <button className="button" onClick={onChangeShowAddList}>{children }</button>
+function Button({ children, onClick }) {
+  return <button className="button" onClick={onClick}>{children }</button>
   
 }
 
-function AddFriend() {
+function AddFriend({onAddFriend}) {
   const [name, setName] = useState('')
   const [image, setImage] = useState('https://i.pravatar.cc/48?u')
   
@@ -77,6 +91,7 @@ function AddFriend() {
       balance:0
       
     }
+    onAddFriend(newFriend)
     setName('')
     setImage('https://i.pravatar.cc/48?u')
   }
